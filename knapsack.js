@@ -28,6 +28,13 @@ let items = [
 
 function random_number_between_zero_and_one() {
     var random = (Math.random() * 1);
+    console.log(random)
+    return random;
+}
+
+function random_number_generator_for_mutation(range) {
+    var random= Math.round((Math.random() * range));
+    // console.log(random)
     return random;
 }
 
@@ -155,11 +162,43 @@ return children_array;
     return relative_boundries_array;
     }
 
+
+    const mutation=(crossovered_array)=>{
+        for(let i=0;i<crossovered_array.length;i++){
+            if(random_one_zero()){
+                let index_to_mutate=random_number_generator_for_mutation(3);
+                console.log("mutation on:",index_to_mutate);
+                if(crossovered_array[i][index_to_mutate]==1){
+                    crossovered_array[i][index_to_mutate]=0;
+                }
+                else{
+                    crossovered_array[i][index_to_mutate]=1;
+                }
+
+            }
+            else{
+                console.log("no mutation")
+            }
+
+        }
+        return crossovered_array;
+        // console.log(crossovered_array.length,"length")
+    }
+
 // const initial_population_array = initial_population(5, items);
 // console.log();
 
+
+
 let initial_population_array = initial_population(4, items);
+console.log(initial_population_array,"initial population")
 let RBS_array = RBS( initial_population_array);
 let children_array = children_production_function(initial_population_array, RBS_array, items) 
 console.log(children_array, "CHILDREN");
+let mutated_children_array= mutation(children_array);
+console.log(mutated_children_array,"children after")
+
+// random_number_between_zero_and_one();
+// random_number_generator_for_mutation(3)
+// console.log(random_number_generator_for_mutation(4),"random");
 // console.log(initial_population_array);
