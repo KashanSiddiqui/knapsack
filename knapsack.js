@@ -13,7 +13,7 @@ let items = [
         weight : 2
     },
     {
-        value : 12,
+        value : 4,
         weight : 2
     },
     // {
@@ -105,17 +105,20 @@ const initial_population = (limit, original_arr) => {
 const recalculated_fitness_value_function = (children_array, items_arr) => {
     // console.log(children_array, items, "RECALCULATED")
     for (let i = 0; i < children_array.length; i++) {
-        sum = 0;
+        sum_value = 0;
+        sum_weight = 0;
         // array[i] = [];
         for (let j = 0; j < items_arr.length; j++) {
             // array[i][j] = random_one_zero();
             if(children_array[i][j]){
-                sum += items_arr[j].value;
+                sum_value += items_arr[j].value;
+                sum_weight += items_arr[j].weight;
             }
         }
-        children_array[i][items_arr.length] = sum;
+        children_array[i][items_arr.length] = sum_value;
+        children_array[i][items_arr.length + 1] = sum_weight;
     }
-    console.log(children_array, "children_array")
+    // console.log(children_array, "children_array")
     return children_array;
 }
 
@@ -132,7 +135,7 @@ const children_production_function = (initial_array, RBS_array, items_arr) => {
             i--;
         }else{
         children_array = children_array.concat( recalculated_fitness_value_function(crossover(initial_array, parent1, parent2), items_arr) );
-        console.log(children_array.length, "children_array")
+            // console.log(children_array.length, "children_array")
         // recalculated_fitness_value_array = recalculated_fitness_value_array.concat(recalculated_fitness_value_function(children_array, items))
         // console.log(recalculated_fitness_value_array.length);
     }
@@ -195,7 +198,7 @@ console.log(initial_population_array,"initial population")
 let RBS_array = RBS( initial_population_array);
 let children_array = children_production_function(initial_population_array, RBS_array, items) 
 console.log(children_array, "CHILDREN");
-let mutated_children_array= mutation(children_array);
+let mutated_children_array= recalculated_fitness_value_function(mutation(children_array),items);
 console.log(mutated_children_array,"children after")
 
 // random_number_between_zero_and_one();
