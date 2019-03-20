@@ -6,24 +6,24 @@ let items = [
     },
     {
         value : 3,
-        weight : 5
+        weight : 9
+    },
+    {
+        value : 12,
+        weight : 8
+    },
+    {
+        value : 4,
+        weight : 12
     },
     {
         value : 12,
         weight : 2
     },
     {
-        value : 4,
+        value : 12,
         weight : 2
-    },
-    // {
-    //     value : 12,
-    //     weight : 2
-    // },
-    // {
-    //     value : 12,
-    //     weight : 2
-    // }
+    }
 ]
 
 function random_number_between_zero_and_one() {
@@ -89,15 +89,22 @@ const initial_population = (limit, original_arr) => {
     let array = []
     // console.log(original_arr)
         for (let i = 0; i < limit; i++) {
-        sum = 0;
+        sum_value = 0;
+        sum_weight = 0;
         array[i] = [];
         for (let j = 0; j < limit; j++) {
             array[i][j] = random_one_zero();
             if(array[i][j]){
-                sum += original_arr[j].value;
+                sum_value += original_arr[j].value;
+                sum_weight += original_arr[j].weight;
+
             }
         }
-        array[i][limit] = sum;
+        array[i][limit] = sum_value;
+        array[i][limit+1]=sum_weight;
+        if(sum_weight>available_weight){
+            i--;
+        }
     }
     return array;
 }
@@ -193,14 +200,15 @@ return children_array;
 
 
 
-let initial_population_array = initial_population(4, items);
+let initial_population_array = initial_population(6, items);
 console.log(initial_population_array,"initial population")
 let RBS_array = RBS( initial_population_array);
 let children_array = children_production_function(initial_population_array, RBS_array, items) 
 console.log(children_array, "CHILDREN");
 let mutated_children_array= recalculated_fitness_value_function(mutation(children_array),items);
-console.log(mutated_children_array,"children after")
-
+console.log(mutated_children_array,"children after");
+let total_population = initial_population_array.concat(mutated_children_array);
+// trucation(total_population);
 // random_number_between_zero_and_one();
 // random_number_generator_for_mutation(3)
 // console.log(random_number_generator_for_mutation(4),"random");
