@@ -1,28 +1,36 @@
-const available_weight = 20;
+const available_weight = 30;
 let items = [
-    {
-        value : 2,
-        weight : 5
-    },
     {
         value : 3,
         weight : 9
     },
     {
         value : 12,
-        weight : 8
+        weight : 6
     },
     {
         value : 4,
-        weight : 12
-    },
-    {
-        value : 12,
         weight : 2
     },
     {
-        value : 12,
-        weight : 2
+        value : 19,
+        weight : 5
+    },
+    {
+        value : 8,
+        weight : 8
+    },
+    {
+        value : 9,
+        weight : 7
+    },
+    {
+        value : 7,
+        weight : 3
+    },
+    {
+        value : 6,
+        weight : 1
     }
 ]
 
@@ -195,21 +203,34 @@ return children_array;
         // console.log(crossovered_array.length,"length")
     }
 
-// const initial_population_array = initial_population(5, items);
-// console.log();
+const fittest_of_all_function = (array, weight) => {
+    let len = ( array[0].length - 1 );
+    array.sort((a, b) => {
+        if (a[len] === b[len]) {
+            return 0;
+        }
+        else {
+            return (a[len] < b[len]) ? -1 : 1;
+        }
+    })
+    fittest_array = []
+    for(let i=0; i < 8; i++){
+        fittest_array.push(array[i]);
+    }
+    return fittest_array;
+}
 
 
 
-let initial_population_array = initial_population(6, items);
-console.log(initial_population_array,"initial population")
-let RBS_array = RBS( initial_population_array);
-let children_array = children_production_function(initial_population_array, RBS_array, items) 
-console.log(children_array, "CHILDREN");
-let mutated_children_array= recalculated_fitness_value_function(mutation(children_array),items);
-console.log(mutated_children_array,"children after");
-let total_population = initial_population_array.concat(mutated_children_array);
-// trucation(total_population);
-// random_number_between_zero_and_one();
-// random_number_generator_for_mutation(3)
-// console.log(random_number_generator_for_mutation(4),"random");
-// console.log(initial_population_array);
+let initial_population_array = initial_population(8, items);
+for(let i=0; i<50; i++){
+    let RBS_array = RBS( initial_population_array);
+    let children_array = children_production_function(initial_population_array, RBS_array, items) 
+    let mutated_children_array= recalculated_fitness_value_function(mutation(children_array),items);
+    let total_population = initial_population_array.concat(mutated_children_array);
+    let fittest_of_all = fittest_of_all_function(total_population, available_weight);
+    initial_population_array = fittest_of_all;
+    console.log(fittest_of_all, "fittest_of_all")
+}
+
+console.log(initial_population_array, "intial");
